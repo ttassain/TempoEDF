@@ -21,7 +21,7 @@ int blinkErrorStep = 1;
 
 // WiFi
 const char *ssid = "*** your ssid ***";
-const char *password = "*** yout password ***";
+const char *password = "*** password ***";
 
 String couleurJourJ = "";
 String couleurJourJ1 = "";
@@ -134,6 +134,15 @@ void blinkLed() {
   }
 }
 
+/**
+ * @brief Récupère la date du jour sur mon synology
+ * 
+ * <?php
+ * date_default_timezone_set('Europe/Paris');
+ * echo @date("Y-m-d|H:i:s");
+ * ?>
+ * 
+ */
 void getDate() {
   String url = "http://192.168.1.150/datetime.php";
   httpClientDate.begin(url);
@@ -151,11 +160,11 @@ void getDate() {
   httpClientDate.end();
 }
 
+/**
+ * @brief Récupération des jours restant par couleur
+ * 
+ */
 void getTempoDays() {
-  //Jours restant :
-  //il est consitué de 40 jours blancs et de 20 jours rouges
-  //{"PARAM_NB_J_BLANC":11,"PARAM_NB_J_ROUGE":0,"PARAM_NB_J_BLEU":152}
-
   String url = "https://particulier.edf.fr/services/rest/referentiel/getNbTempoDays?TypeAlerte=TEMPO";
   httpClientTempoDays.begin(url);
   httpClientTempoDays.addHeader("Accept", "application/json");
@@ -176,6 +185,10 @@ void getTempoDays() {
 
 }
 
+/**
+ * @brief Récupération de la couleur du jour et du lendemain
+ * 
+ */
 void getTempoColor() {
   String url = "https://particulier.edf.fr/services/rest/referentiel/searchTempoStore?dateRelevant=" + currentDate;
   httpClientTempoColor.begin(url);
